@@ -1,0 +1,43 @@
+
+/**
+ * Fonts are from TypeKit
+ */
+
+body {
+  font-family: 'Volkhov', serif;
+  font-size: 14px;
+}
+
+h1,h2,h3,h4 {
+  letter-spacing: -1px; // requested by Lauren March 18th
+}
+
+small {
+  font-size: 9px;
+}
+
+.button {
+  font-size: 18px;
+}
+
+// Waiting for font to be added to typekit
+.planCard h4.planName {
+  font-family: "league-gothic", sans-serif;
+  letter-spacing: normal;
+  font-style: italic;
+}
+
+.athletes .athlete .text {
+  // font-family: "league-gothic", sans-serif;
+  // letter-spacing: normal;
+  // font-style: italic;
+}
+
+.league-gothic {
+  font-family: "league-gothic", sans-serif!important;
+}
+
+.diary-box .header {
+  font-family: 'Dorsa', sans-serif;
+  font-size: 20px;
+}
