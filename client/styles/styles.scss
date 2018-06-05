@@ -62,6 +62,7 @@ aside {
   width: 70%;
   margin-left: 25%;
   margin-right: 5%;
+  position: absolute;
 }
 
 .part-container {
@@ -294,8 +295,7 @@ aside {
 
 .page-loader {
   margin: auto;
-  position: absolute;
-  top: -30%;
+  margin-top: 30%;
   bottom: 0;
   left: 25%;
   right: 0;

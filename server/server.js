@@ -1,5 +1,6 @@
 const webpack = require('webpack');
-
+const https = require('https');
+const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const config = require('./config/index');
 const passport = require('passport');
@@ -10,6 +11,12 @@ const express = new require('express');
 const port = 4000;
 
 const app = express();
+
+const sslOptions = {
+  key: fs.readFileSync('./server/config/key.pem'),
+  cert: fs.readFileSync('./server/config/certificate.pem')
+};
+
 
 // tell the app to look for static files in these directories
 app.use(express.static('./dist/'));
@@ -25,13 +32,11 @@ app.use(passport.session());
 
 // routes
  const authRoutes = require('./routes/auth');
- const emailRoutes = require('./routes/email');
  const depRoutes = require('./routes/department');
  const mrRoutes = require('./routes/medrec');
  const downloadRoutes = require('./routes/download');
  const networkRoutes = require('./routes/network');
  app.use('/auth', authRoutes);
- app.use('/email', emailRoutes);
  app.use('/department', depRoutes);
  app.use('/download', downloadRoutes);
  app.use('/medrec', mrRoutes);
@@ -58,12 +63,13 @@ MongoClient.connect(config.generationdbMongoUrl, (err, database) => {
     if (err) return console.log(err);
     const patientDb = database2.db('med-rec-management');
     app.set('patientdb', patientDb);
+    const httpsServer = https.createServer(sslOptions, app);
 
-    app.listen(port, function(error) {
+    httpsServer.listen(port, (error) => {
       if (error) {
         console.error(error);
       } else {
-        console.info('==> ??  Open up http://localhost:%s/ in your browser.', port);
+        console.info('==> ??  Open up https://localhost:%s/ in your browser.', port);
       }
     });
   });

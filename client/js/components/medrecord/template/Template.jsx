@@ -59,11 +59,11 @@ class Template extends Component {
               });
             } else {
               template.generatedDocument = str;
-              this.setState({loading: false, template, shownNotes});
+              this.setState({loading: false, template, name: template.name, shownNotes});
             }
           });
         } else {
-            this.setState({loading: false, template, shownNotes});
+            this.setState({loading: false, template, name: template.name, shownNotes});
         }
       });
   }
@@ -169,7 +169,7 @@ class Template extends Component {
             <nav className="level">
               <div className="level-left">
                   <div className="level-item">
-                    <h5 className="title is-5 mr-10">Template: {this.state.template.name}. {(this.state.template.isComplete) ? "[closed]" : ''}</h5>
+                    <h5 className="title is-5 mr-10">Template: {this.state.name}. {(this.state.template.isComplete) ? "[closed]" : ''}</h5>
                   </div>
               </div>
               <div className="level-right">
