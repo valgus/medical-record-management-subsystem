@@ -141,13 +141,31 @@ router.get('/all', (req, res, next) => {
             callback(err);
           }
           if (user) {
-            req.app.get("db").collection('departments').find( {headId: id}).toArray((err, departments) => {
-              if (err) {
-                console.log(err);
-                callback(err);
-              }
-              callback(null, departments);
-            });
+            if (user.level === 0) {
+              req.app.get("db").collection('departments').find( {headId: id}).toArray((err, departments) => {
+                if (err) {
+                  console.log(err);
+                  callback(err);
+                }
+                callback(null, departments);
+              });
+            } else {
+              req.app.get("db").collection('users').findOne( {members: new ObjectId(user._id)}, (err, head) => {
+                console.log(head._id);
+                if (err || !head) {
+                  console.log(err);
+                  callback(err);
+                }
+                req.app.get("db").collection('departments').find( {headId: head._id.toString()}).toArray((err, departments) => {
+                  console.log(departments);
+                  if (err) {
+                    console.log(err);
+                    callback(err);
+                  }
+                  callback(null, departments);
+                });
+              });
+            }
           } else {
             callback(null, null);
           }

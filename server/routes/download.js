@@ -152,8 +152,8 @@ const router = new express.Router();
                 }
                 row += 2;
               });
-              const filename = 'tmp/out' + data.id +'.xlsx'
-              var out = fs.createWriteStream ( filename );
+              const filename = '/tmp/out' + data.id +'.xlsx'
+              var out = fs.createWriteStream (__dirname + filename );
 
               out.on ( 'error', function ( err ) {
                 console.log ( err );
@@ -163,7 +163,7 @@ const router = new express.Router();
                 function ( done ) {
                   out.on ( 'close', function () {
                     console.log ( 'Finish to create an Excel file with  questionnaire.' );
-                    const bitmap = fs.readFileSync(filename);
+                    const bitmap = fs.readFileSync(__dirname + filename);
                     // convert binary data to base64 encoded string
                     const base64 =  new Buffer(bitmap).toString('base64') + "";
                     done ( null, base64 );
@@ -172,7 +172,7 @@ const router = new express.Router();
                 }
 
               ], function ( err, base64 ) {
-                fs.unlink(filename)
+                fs.unlink(__dirname + filename)
                 if ( err ) {
                   console.log ( 'error: ' + err );
                     return callback({error: 'Error during file saving.'});
@@ -238,13 +238,13 @@ const router = new express.Router();
                           info.docx = info.docx.replace(new RegExp(answer.code, 'g'), answer.value);
                         }
                       const filename = '\\tmp\\out' + data.id +'.html'
-                      fs.writeFile(process.cwd() + filename, info.docx, function(err) {
+                      fs.writeFile(__dirname  + filename, info.docx, { flag: 'w+' }, function(err) {
                           if(err) {
                             console.log(err, 'during writing');
                               return  callback({error: 'Error during html creation.'});
                           }
-                          fs.readFile(process.cwd() + filename, 'utf-8', function(err, html) {
-                          fs.unlink(process.cwd() +filename)
+                          fs.readFile(__dirname +  filename, 'utf-8', function(err, html) {
+                          fs.unlink(__dirname +filename)
                             if (err) {
                               console.log(err, 'during reading');
                                 return  callback({error: 'Error during html reading.'});
@@ -256,13 +256,13 @@ const router = new express.Router();
                     });
                   } else {
                     const filename = '\\tmp\\out' + data.id +'.html'
-                    fs.writeFile(process.cwd() + filename, info.docx, function(err) {
+                    fs.writeFile(__dirname + filename, info.docx,{ flag: 'w+' }, function(err) {
                         if(err) {
                           console.log(err, 'during writing');
                             return  callback({error: 'Error during html creation.'});
                         }
-                        fs.readFile(process.cwd() + filename, 'utf-8', function(err, html) {
-                        fs.unlink(process.cwd() +filename)
+                        fs.readFile(__dirname + filename, 'utf-8', function(err, html) {
+                        fs.unlink(__dirname + filename)
                           if (err) {
                             console.log(err, 'during reading');
                               return  callback({error: 'Error during html reading.'});
@@ -369,8 +369,8 @@ const router = new express.Router();
               }
 
               const pObj2 = docx.createTable (table, tableStyle);
-              const filename = 'tmp/out' + data.id +'.docx'
-              const out = fs.createWriteStream ( filename );
+              const filename = '/tmp/out' + data.id +'.docx'
+              const out = fs.createWriteStream (__dirname +  filename );
 
               out.on ( 'error', function ( err ) {
                 console.log ( err );
@@ -381,7 +381,7 @@ const router = new express.Router();
                 function ( done ) {
                   out.on ( 'close', function () {
                     console.log ( 'Finish to create a DOCX file with observed value.' );
-                    const bitmap = fs.readFileSync(filename);
+                    const bitmap = fs.readFileSync(__dirname +  filename);
                     // convert binary data to base64 encoded string
                     const base64 =  new Buffer(bitmap).toString('base64') + "";
                     done ( null, base64 );
@@ -390,7 +390,7 @@ const router = new express.Router();
                 }
 
               ], function ( err, base64 ) {
-                fs.unlink(filename);
+                fs.unlink(__dirname +filename);
                 if ( err ) {
                   console.log ( 'error: ' + err );
                     return callback({error: 'Error during observed value information retrieving.'});
